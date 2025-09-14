@@ -1,6 +1,6 @@
 import { evaluate, SyntaxError } from '../src';
 import { test } from '../../mark';
-  
+
 export function syncFail()
 {
     throw new Error("oops");
