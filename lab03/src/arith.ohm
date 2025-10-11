@@ -1,3 +1,25 @@
 Arithmetic {
-    // write rules here
+	Expr 
+        = AddExpr
+      
+     AddExpr 
+     	= AddExpr "+" MulExpr --plus
+        | AddExpr "-" MulExpr --minus
+        | MulExpr
+	
+    MulExpr
+    	= MulExpr "*" Atom --times
+        | MulExpr "/" Atom --division
+        | Atom
+    
+    Atom
+        = "(" Expr ")" --paren
+        | "-" Atom --neg
+        | number
+        | variable
+	
+	variable = letter (letter | digit)*
+
+    number
+        = digit+      
 }
