@@ -9,7 +9,7 @@ export function evaluate(source: string): number
 
 export function maxStackDepth(source: string): number
 { 
-    throw "Not implemented";
+    return rpnSemantics(parse(source)).stackDepth.max;
 }
 
 

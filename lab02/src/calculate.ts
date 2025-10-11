@@ -1,4 +1,4 @@
-import { ReversePolishNotationActionDict} from "./rpn.ohm-bundle";
+import { ReversePolishNotationActionDict } from "./rpn.ohm-bundle";
 
 export const rpnCalc = {
     RpnExpr_plus(x, y, _) {
