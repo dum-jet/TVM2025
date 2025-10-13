@@ -10,32 +10,24 @@ const arithCalc = {
     },
 
     AddExpr(e, it1, it2) {
-        const nodes = it2.children.map(c => c.calculate(this.args.params));
         const operations = it1.children;
-        let ans = e.calculate(this.args.params);
-        let sign = 1;
-        for (let i = 0; i < nodes.length; ++i) {
-            sign = operations[i].sourceString == "-" ? -1 : 1;
-            ans += sign * nodes[i];
-        }
-        return ans;
+        return it2.children.reduce((accum, currentNode, i) => {
+            const value = currentNode.calculate(this.args.params);
+            return operations[i].sourceString == '-' ? accum - value : accum + value;
+        }, e.calculate(this.args.params));
     },
 
     MulExpr(e, it1, it2) {
-        const nodes = it2.children.map(c => c.calculate(this.args.params));
         const operations = it1.children;
-        let ans = e.calculate(this.args.params);
-        let flag = 0;
-        for (let i = 0; i < nodes.length; ++i) {
-            flag = operations[i].sourceString == "*" ? 0 : 1;
-            if (flag == 0) {
-                ans *= nodes[i];
-            } else {
-                if (nodes[i] == 0) throw new Error("Division by zero");
-                ans /= nodes[i];
+        return it2.children.reduce((accum, currentNode, i) => {
+            const value = currentNode.calculate(this.args.params);
+            const operation = operations[i].sourceString;
+            if (operation == "/") {
+                if (value == 0) throw new Error("Division by zero");
+                return accum / value;
             }
-        }
-        return ans;
+            return accum * value;
+        }, e.calculate(this.args.params));
     },
 
     Atom(e) {
