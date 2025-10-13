@@ -9,10 +9,6 @@ export const rpnCalc = {
         return x.calculate() * y.calculate();
     },
 
-    RpnExpr(e) {
-        return e.calculate();
-    },
-
     number(_) {
         return parseInt(this.sourceString);
     }
