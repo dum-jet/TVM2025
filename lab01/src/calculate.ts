@@ -5,26 +5,12 @@ export const addMulSemantics: AddMulSemantics = grammar.createSemantics() as Add
 
 
 const addMulCalc = {
-    Exp: (e) => e.calculate(),
-
     AddExp_plus(x, _, y) {
         return x.calculate() + y.calculate();
     },
 
-    AddExp(e) {
-        return e.calculate();
-    },
-
     MulExp_times(x, _, y) {
         return x.calculate() * y.calculate();
-    },
-
-    MulExp(e) {
-        return e.calculate();
-    },
-
-    Atom(e) {
-        return e.calculate();
     },
 
     Atom_paren(_, e, __) {
