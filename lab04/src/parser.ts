@@ -1,6 +1,6 @@
 import { MatchResult } from 'ohm-js';
 import { arithGrammar, ArithmeticActionDict, ArithmeticSemantics, SyntaxError } from '../../lab03';
-import { Expr } from './ast';
+import { Expr, BinaryExpr, UnaryExpr } from './ast';
 
 export const getExprAst: ArithmeticActionDict<Expr> = {
     // write rules here
