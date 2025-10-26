@@ -14,6 +14,7 @@ const addMulCalc = {
     Atom_paren(_, e, __) {
         return e.calculate();
     },
+
     
     number: (n) => parseInt(n.sourceString)
 } satisfies AddMulActionDict<number>
