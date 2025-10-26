@@ -5,8 +5,6 @@ export const addMulSemantics: AddMulSemantics = grammar.createSemantics() as Add
 
 
 const addMulCalc = {
-    // Exp: (e) => e.calculate(),
-
     AddExp_plus: (x, _, y) => x.calculate() + y.calculate(),
 
     MulExp_times(x, _, y) {
@@ -17,7 +15,7 @@ const addMulCalc = {
         return e.calculate();
     },
 
-    number: (n) => parseInt(n.sourceString),
+    number: (n) => parseInt(n.sourceString)
 } satisfies AddMulActionDict<number>
 
 addMulSemantics.addOperation<Number>("calculate()", addMulCalc);
