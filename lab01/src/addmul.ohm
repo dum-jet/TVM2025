@@ -3,7 +3,8 @@ AddMul {
     = AddExp
 
   AddExp
-    = AddExp "+" MulExp  -- plus
+    = AddExp "+" MulExp -- plus
+    | AddExp "-" MulExp -- minus
     | MulExp
 
   MulExp

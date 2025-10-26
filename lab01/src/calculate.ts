@@ -15,6 +15,7 @@ const addMulCalc = {
         return e.calculate();
     },
 
+    
     number: (n) => parseInt(n.sourceString)
 } satisfies AddMulActionDict<number>
 
