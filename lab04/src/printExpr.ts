@@ -13,7 +13,7 @@ function getPrecedence(op: string): number {
     }
 }
 
-function isAssociative(op: String): boolean {
+function isCommutative(op: String): boolean {
     switch (op) {
         case '+':
         case '*':
@@ -37,7 +37,7 @@ function needsParentheses(parentOp: string, childExpr: Expr, isLeftChild: boolea
     } else if (childPrec > parentPrec) {
         return false;
     } else {
-        if (!isLeftChild && !( isAssociative(parentOp) && parentOp==childExpr.operator))
+        if (!isLeftChild && !( isCommutative(parentOp) && parentOp==childExpr.operator))
             return true;
         return false;
     }
