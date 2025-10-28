@@ -13,10 +13,23 @@ function getPrecedence(op: string): number {
     }
 }
 
-function needsParentheses(parentOp: string, childExpr: Expr, isLeftChild: boolean): boolean {
-    if (childExpr.type !== 'BinaryExpr') {
-        return false;
+function isAssociative(op: String): boolean {
+    switch (op) {
+        case '+':
+        case '*':
+            return true;
+        case '-':
+        case '/':
+            return false;
+        default:
+            throw new SyntaxError();
     }
+}
+
+function needsParentheses(parentOp: string, childExpr: Expr, isLeftChild: boolean): boolean {
+    if (childExpr.type !== 'BinaryExpr')
+        return false;
+
     const parentPrec = getPrecedence(parentOp);
     const childPrec = getPrecedence(childExpr.operator);
     if (childPrec < parentPrec) {
@@ -24,7 +37,7 @@ function needsParentheses(parentOp: string, childExpr: Expr, isLeftChild: boolea
     } else if (childPrec > parentPrec) {
         return false;
     } else {
-        if (!isLeftChild && !( (parentOp == '+' || parentOp == '*') && parentOp==childExpr.operator))
+        if (!isLeftChild && !( isAssociative(parentOp) && parentOp==childExpr.operator))
             return true;
         return false;
     }

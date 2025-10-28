@@ -1,4 +1,4 @@
-import { BinaryExpr, Expr, UnaryExpr } from "../../lab04";
+import { BinaryExpr, Expr, Num, UnaryExpr } from "../../lab04";
 
 export function derive(e: Expr, varName: string): Expr {
     switch (e.type) {
@@ -37,11 +37,11 @@ export function derive(e: Expr, varName: string): Expr {
     }
 }
 
-function isZero(e: Expr): boolean { 
+function isZero(e: Expr): e is Num { 
     return (e.type == 'Num' && e.value == 0) ? true : false;
 }
 
-function isOne(e: Expr): boolean  { 
+function isOne(e: Expr): e is Num  { 
     return (e.type == 'Num' && e.value == 1) ? true : false;
 }
 
@@ -62,7 +62,7 @@ function reduceDivision(a: Expr, b: Expr): Expr {
     let addMinus: boolean;
     [a, b, addMinus] = factorOutMinus(a, b);
     if (isOne(b))
-        return addMinus ? reduceUnaryMinus(1, a) : a;
+        return addMinus ? reduceUnaryMinus(1, a) : a; 
     let tmp: BinaryExpr = {type: "BinaryExpr", left: a, operator: '/', right: b};
     return addMinus ? reduceUnaryMinus(1, tmp) : tmp;
 }
