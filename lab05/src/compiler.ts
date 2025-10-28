@@ -4,32 +4,36 @@ import { buildOneFunctionModule, Fn } from "./emitHelper";
 const { i32, get_local } = C;
    
 export function getVariables(e: Expr): string[] {  
-    return traverseForVariables(e, []);
+    const variables:string[] = [];
+        
+    function traverseForVariables(ex: Expr): void {
+        switch (ex.type) {
+            case 'Num':
+                return;
+
+            case 'Variable':
+                if (!variables.includes(ex.name))
+                    variables.push(ex.name);
+                return;
+
+            case 'UnaryExpr':
+                traverseForVariables(ex.operand);
+                return;
+
+            case 'BinaryExpr':
+                traverseForVariables(ex.left);
+                traverseForVariables(ex.right);
+                return;
+                
+            default:
+                throw new Error("Unhandled expression type.");
+        } 
+    }
+
+    traverseForVariables(e);
+    return variables; 
 }
 
-function traverseForVariables(ex: Expr, variables: string[]): string[] {
-    switch (ex.type) {
-        case 'Num':
-            return variables;
-
-        case 'Variable':
-            if (!variables.includes(ex.name))
-                variables.push(ex.name);
-            return variables;
-
-        case 'UnaryExpr':
-            traverseForVariables(ex.operand, variables);
-            return variables;
-
-        case 'BinaryExpr':
-            traverseForVariables(ex.left, variables);
-            traverseForVariables(ex.right, variables);
-            return variables;
-            
-        default:
-            throw new Error("Unhandled expression type.");
-    } 
-}
 
 export async function buildFunction(e: Expr, variables: string[]): Promise<Fn<number>>
 {
@@ -73,3 +77,7 @@ function wasm(e: Expr, args: string[]): Op<I32> {
             throw new Error("Unhandled expression type.");
     }
 }
+
+/*const ops = {
+    '*': i32.mul,
+}*/
