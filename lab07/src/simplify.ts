@@ -104,60 +104,6 @@ function sameVarSet(e1: Expr, e2: Expr): boolean {
     return true;
 }
 
-function applyIdentitiesToNode(e: Expr, identities: [Expr, Expr][]) : Expr 
-{
-    let currentExpr = foldConstants(e);
-    let currentCost = cost(currentExpr);
-
-    loop1:
-    while (true) {
-        for (const [e1, e2] of identities) {
-            let match = matchVariables(e1, currentExpr);
-            if (match !== null) {
-                let newExpr = foldConstants(resolveVariables(e2, match));
-                let newCost = cost(newExpr);
-                if (newCost <= currentCost) {
-                    currentExpr = newExpr;
-                    currentCost = newCost;
-                    continue loop1;
-                }
-            }
-        }
-        break;
-    }
-    return currentExpr;
-}
-
-function getAllRewrites(e: Expr, identities: [Expr, Expr][]): Set<Expr> {
-    const results = new Set<Expr>();
-    // to current node 
-    for (const [e1, e2] of identities) {
-        const match = matchVariables(e1, e);
-        if (match !== null) {  
-            const newExpr = foldConstants(resolveVariables(e2, match));
-            results.add(newExpr);
-        }
-    }
-
-    // recursively to subnodes of e
-    switch (e.type) {
-        case "Num":
-        case "Variable":
-            break;
-        case "UnaryExpr":
-            for (const newOperand of getAllRewrites(e.operand, identities))
-                results.add({type: "UnaryExpr", operator: e.operator, operand: newOperand});
-            break;
-        case "BinaryExpr":
-            for (const newLeft of getAllRewrites(e.left, identities)) 
-                results.add({type: "BinaryExpr", left: newLeft, operator: e.operator, right: e.right});
-            
-            for (const newRight of getAllRewrites(e.right, identities))
-                results.add({type: "BinaryExpr", left: e.left, operator: e.operator, right: newRight});
-    }
-    return results;
-}
-
 function applyToRoot(e: Expr, identities: [Expr, Expr][]): Set<Expr> {
     const results = new Set<Expr>();
     for (const [e1, e2] of identities) {
